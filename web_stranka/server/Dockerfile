@@ -11,4 +11,4 @@ RUN npm install
 #skopíruje všetko
 COPY . .
 
-ENTRYPOINT ["npm" "start"]
+ENTRYPOINT ["npm", "start"]
