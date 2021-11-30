@@ -11,11 +11,15 @@ var sprava = {
 var sprava = null;
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   res.render('index', { 
     title: 'Arduino',
     msg: sprava
   });
+});
+
+router.get('/sprava', function (req, res) {
+  res.json(sprava);
 });
 
 /* POST */

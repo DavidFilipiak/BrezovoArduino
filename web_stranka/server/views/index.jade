@@ -4,7 +4,7 @@ block content
   h1= title
   p Welcome to #{title}
   if msg!=null
-    if msg.cerpadlo
+    if msg.cerpadlo==true
       p Čerpadlo zapnuté
     else 
       p Čerpadlo vypnuté
@@ -13,7 +13,7 @@ block content
     table 
       tr 
         th Teploty L 
-        th Teplpty R 
+        th Teploty R 
       each val, index in msg.teplotyL
         tr 
           td #{val.t}°C 
