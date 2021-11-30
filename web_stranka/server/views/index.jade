@@ -3,11 +3,21 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  if msg
+  if msg!=null
     if msg.cerpadlo
       p Čerpadlo zapnuté
     else 
       p Čerpadlo vypnuté
     p Spaliny: #{msg.spaliny}°C
+
+    table 
+      tr 
+        th Teploty L 
+        th Teplpty R 
+      each val, index in msg.teplotyL
+        tr 
+          td #{val.t}°C 
+          td #{msg.teplotyR[index].t}°C
+
   else 
     p Čakám na dáta
