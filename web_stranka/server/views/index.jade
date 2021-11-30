@@ -3,8 +3,11 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  if msg.cerpadlo
-    p Čerpadlo zapnuté
+  if msg
+    if msg.cerpadlo
+      p Čerpadlo zapnuté
+    else 
+      p Čerpadlo vypnuté
+    p Spaliny: #{msg.spaliny}°C
   else 
-    p Čerpadlo vypnuté
-  p Spaliny: #{msg.spaliny}°C
+    p Čakám na dáta
