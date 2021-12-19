@@ -42,6 +42,7 @@ const byte senzorPinPrava = 13;
 const byte photoResPin = A0;
 
 const byte relayPin = 7;
+bool rel_zopnute = false;
 
 const byte tempPinSO = 2;   //serial out pin
 const byte tempPinCS = 3;   //chip select pin
@@ -83,36 +84,54 @@ void setup() {    //časť setup sa vykoná raz, na začiatku programu
 void loop() {   //časť loop sa bude opakovať donekonečna, asi 4000 krát za sekundu
   
   lcd2.setCursor(0,0);
-
+  /*
   if (analogRead(photoResPin) > 350){  // hodnota medzi 0 a 1024
     lcd2.print("Cerpadlo: ON ");
   }
   else{
     lcd2.print("Cerpadlo: OFF");
   }
-
+  */
+  /*
   //pixel art
   lcd2.setCursor(14,0);
   lcd2.write(byte(0));
   lcd2.setCursor(15,0);
   lcd2.write(byte(1));
 
-  //pixel art
+  //pixel art*/
 
   lcd2.setCursor(0,1);
   int teplotaSpaliny = round(TeplomerSpaliny.readCelsius());
   String stupneZnak = String(char(223));
   lcd2.print("Spaliny: " + String(teplotaSpaliny) + " " + stupneZnak +"C ");
-
-  if(teplotaSpaliny > 50)
-  {
-    digitalWrite(relayPin, HIGH);
+  
+  lcd2.setCursor(0,0);
+  Serial.println(digitalRead(relayPin));
+  if(!rel_zopnute){
+    if(teplotaSpaliny > 250){
+      digitalWrite(relayPin, HIGH);
+      rel_zopnute = true;
+      lcd2.print("Cerpadlo 1: ON ");
+    }
+    else{
+      digitalWrite(relayPin, LOW);
+      rel_zopnute = false;
+      lcd2.print("Cerpadlo 1: OFF");
+    }
   }
-  else
-  {
-    digitalWrite(relayPin, LOW);
+  else{
+    if(teplotaSpaliny < 80){
+      digitalWrite(relayPin, LOW);
+      rel_zopnute = false;
+      lcd2.print("Cerpadlo 1: OFF");
+    }
+    else{
+      lcd2.print("Cerpadlo 1: ON ");
+      rel_zopnute = true;
+      digitalWrite(relayPin, HIGH);
+    }
   }
-
 
   senzoryL.requestTemperatures();    //vypýta si dáta od senzorov
   senzoryP.requestTemperatures();
