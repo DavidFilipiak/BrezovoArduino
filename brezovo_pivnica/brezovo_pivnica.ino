@@ -118,20 +118,51 @@ void loop() {   //časť loop sa bude opakovať donekonečna, asi 4000 krát za 
   senzoryP.requestTemperatures();
   for (byte x = 0; x < 4; x++)      //4 krát zopakuje nasledujúce kroky (4 krát preto, lebo sú 4 riadky displeja)
   {
+    /*
     lcd1.setCursor(0,x);           //nastaví kurzor displeja na 1 stĺpec a (x+1)-tý riadok
     lcd1.print("Teplota L" + String(4 - x) + ":");    //na x-tý riadok napíše text
     lcd1.setCursor(12,x);          //nastaví kurzor displeja na 12 stĺpec a (x+1)-tý riadok
     lcd1.print(senzoryL.getTempCByIndex(3 - x),1);        //napíše teplotu x-tého senzora v stupňoch Celzia
     lcd1.setCursor(16,x);          //nastaví kurzor displeja na 17 stĺpec a (x+1)-tý riadok
     lcd1.print(" " + stupneZnak + "C ");            //vyplní to medzerami (iba preto, lebo keď dôjde k chybe, tak sa to opraví)
+    */
 
-    lcd3.setCursor(0,x);           //nastaví kurzor displeja na 1 stĺpec a (x+1)-tý riadok
-    lcd3.print("Teplota P" + String(4 - x) + ":");    //na x-tý riadok napíše text
-    lcd3.setCursor(12,x);          //nastaví kurzor displeja na 12 stĺpec a (x+1)-tý riadok
-    lcd3.print(senzoryP.getTempCByIndex(3 - x),1);        //napíše teplotu x-tého senzora v stupňoch Celzia
-    lcd3.setCursor(16,x);          //nastaví kurzor displeja na 17 stĺpec a (x+1)-tý riadok
-    lcd3.print(" " + stupneZnak + "C ");            //vyplní to medzerami (iba preto, lebo keď dôjde k chybe, tak sa to opraví)
-  }  
+    lcd1.setCursor(0,x);           //nastaví kurzor displeja na 1 stĺpec a (x+1)-tý riadok
+    lcd1.print("Teplota L" + String(4 - x) + ":");    //na x-tý riadok napíše text
+    lcd1.setCursor(12,x);          //nastaví kurzor displeja na 12 stĺpec a (x+1)-tý riadok
+    lcd1.print(senzoryL.getTempCByIndex(3 - x),1);        //napíše teplotu x-tého senzora v stupňoch Celzia
+    lcd1.setCursor(16,x);          //nastaví kurzor displeja na 17 stĺpec a (x+1)-tý riadok
+    lcd1.print(" " + stupneZnak + "C ");            //vyplní to medzerami (iba preto, lebo keď dôjde k chybe, tak sa to opraví)
+  }
+
+    lcd3.setCursor(0,0);
+    lcd3.print("Teplota P4:");
+    lcd3.setCursor(12,0);
+    lcd3.print(senzoryP.getTempCByIndex(3),1);
+    lcd3.setCursor(16,0);
+    lcd3.print(" " + stupneZnak + "C ");
+
+    lcd3.setCursor(0,1);
+    lcd3.print("Teplota P3:");
+    lcd3.setCursor(12,1);
+    lcd3.print(senzoryP.getTempCByIndex(1),1);
+    lcd3.setCursor(16,1);
+    lcd3.print(" " + stupneZnak + "C ");
+
+    lcd3.setCursor(0,2);
+    lcd3.print("Teplota P2:");
+    lcd3.setCursor(12,2);
+    lcd3.print(senzoryP.getTempCByIndex(0),1);
+    lcd3.setCursor(16,2);
+    lcd3.print(" " + stupneZnak + "C ");
+
+    lcd3.setCursor(0,3);
+    lcd3.print("Teplota P1:");
+    lcd3.setCursor(12,3);
+    lcd3.print(senzoryP.getTempCByIndex(2),1);
+    lcd3.setCursor(16,3);
+    lcd3.print(" " + stupneZnak + "C ");
+    
 
   delay(500);    //počká pol sekundy (500 milisekúnd) pred ďalším pokračovaním programu
 }
