@@ -38,6 +38,8 @@ const byte senzorPinLava = 12;    /*nastavenie hodnoty premennej senzorPin ako 1
                               const -> konštantná, nemeniaca sa premenná
                               byte -> premenná zaberá 1 byte (8 bitov) RAM pamäte*/
 const byte senzorPinPrava = 13;
+
+const byte teplomerPinCerpadlo2 = 10;
                               
 const byte photoResPin = A0;
 
@@ -52,8 +54,9 @@ MAX6675 TeplomerSpaliny(tempPinSCK, tempPinCS, tempPinSO);  // create instance o
 LiquidCrystal_I2C lcd1(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  /* nastavenie displeja pomocou I2C komunikácie
                                                                  a použitím knižnice LiquidCrystal_I2C
                                                                  !!! TOTO NASTAVENIE NEMENIŤ !!!*/
-LiquidCrystal_I2C lcd2(0x26, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
-LiquidCrystal_I2C lcd3(0x25, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); // žltý displej
+LiquidCrystal_I2C lcd2(0x26, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //displej vlavo dole
+LiquidCrystal_I2C lcd3(0x25, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); // žltý displej vpravo hore
+LiquidCrystal_I2C lcd4(0x23, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //displej vpravo dole
 //LiquidCrystal_I2C lcd1 (0x27, 20, 4);
 
 OneWire oneWire(senzorPinLava);     //pomocou knižnice OneWire zapíše dáta z pinu 12(senzorPin) do premennej "oneWire"
@@ -62,6 +65,9 @@ DallasTemperature senzoryL(&oneWire);  //pomocou knižnice  a premennej "oneWire
 OneWire twoWire(senzorPinPrava);
 DallasTemperature senzoryP(&twoWire);
 
+OneWire wireCerpadlo2(teplomerPinCerpadlo2);
+DallasTemperature teplomerCerpadlo2(&wireCerpadlo2);
+
 void setup() {    //časť setup sa vykoná raz, na začiatku programu
   Serial.begin(9600);     //zaháji komunikáciu so seriálovým monitorom (užitočné pri hľadaní chýb v programe)
   senzoryL.begin();       //zaháji komunikáciu so senzormi
@@ -69,10 +75,12 @@ void setup() {    //časť setup sa vykoná raz, na začiatku programu
   lcd1.begin(20,4);        //zaháji komunikáciu s displejom, a nastaví ho na 20 stĺpcov a 4 riadky
   lcd2.begin(16,2);
   lcd3.begin(20,4);
+  lcd4.begin(16,2);
   
   lcd1.backlight();        //zapne podsvietenie displeja
   lcd2.backlight();
   lcd3.backlight();
+  lcd4.backlight();
 
   lcd2.createChar(0,LeftFace);
   lcd2.createChar(1,RightFace);
@@ -82,16 +90,28 @@ void setup() {    //časť setup sa vykoná raz, na začiatku programu
 }
 
 void loop() {   //časť loop sa bude opakovať donekonečna, asi 4000 krát za sekundu
+
+  String stupneZnak = String(char(223));
   
-  lcd2.setCursor(0,0);
-  /*
-  if (analogRead(photoResPin) > 350){  // hodnota medzi 0 a 1024
-    lcd2.print("Cerpadlo: ON ");
+  lcd4.setCursor(0,0);
+  teplomerCerpadlo2.requestTemperatures();
+  Serial.println(analogRead(photoResPin));
+  
+  if (analogRead(photoResPin) > 300){  // hodnota medzi 0 a 1024
+    lcd4.print("Cerpadlo 2: ON ");
   }
   else{
-    lcd2.print("Cerpadlo: OFF");
+    lcd4.print("Cerpadlo 2: OFF");
   }
-  */
+  float teplotaCerpadlo2 = teplomerCerpadlo2.getTempCByIndex(0);
+  lcd4.setCursor(0,1);
+  lcd4.print("Obeh.voda:");
+  lcd4.setCursor(11,1);
+  lcd4.print(teplotaCerpadlo2,0);
+  lcd4.setCursor(14,1);
+  lcd4.print(stupneZnak + "C ");
+  
+  
   /*
   //pixel art
   lcd2.setCursor(14,0);
@@ -103,11 +123,10 @@ void loop() {   //časť loop sa bude opakovať donekonečna, asi 4000 krát za 
 
   lcd2.setCursor(0,1);
   int teplotaSpaliny = round(TeplomerSpaliny.readCelsius());
-  String stupneZnak = String(char(223));
   lcd2.print("Spaliny: " + String(teplotaSpaliny) + " " + stupneZnak +"C ");
   
   lcd2.setCursor(0,0);
-  Serial.println(digitalRead(relayPin));
+  //Serial.println(digitalRead(relayPin));
   if(!rel_zopnute){
     if(teplotaSpaliny > 250){
       digitalWrite(relayPin, HIGH);
@@ -182,6 +201,5 @@ void loop() {   //časť loop sa bude opakovať donekonečna, asi 4000 krát za 
     lcd3.setCursor(16,3);
     lcd3.print(" " + stupneZnak + "C ");
     
-
   delay(500);    //počká pol sekundy (500 milisekúnd) pred ďalším pokračovaním programu
 }
