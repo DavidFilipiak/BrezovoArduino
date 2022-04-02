@@ -108,8 +108,8 @@ void loop() {   //časť loop sa bude opakovať donekonečna, asi 4000 krát za 
   lcd4.print("Obeh.voda:");
   lcd4.setCursor(11,1);
   lcd4.print(teplotaCerpadlo2,0);
-  lcd4.setCursor(14,1);
-  lcd4.print(stupneZnak + "C ");
+  lcd4.setCursor(13,1);
+  lcd4.print(" " + stupneZnak + "C ");
   
   
   /*
