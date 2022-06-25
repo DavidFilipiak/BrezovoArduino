@@ -3,6 +3,7 @@
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
 #include <max6675.h>
+#include <math.h>
 
 //PIXEL ART----------------------------------------------------------------------------------
 byte LeftFace[8] =
@@ -49,6 +50,9 @@ bool rel_zopnute = false;
 const byte tempPinSO = 2;   //serial out pin
 const byte tempPinCS = 3;   //chip select pin
 const byte tempPinSCK = 4;  //serial clock pin
+
+const byte resetCerpadloTlacidloPin = 8;
+
 MAX6675 TeplomerSpaliny(tempPinSCK, tempPinCS, tempPinSO);  // create instance object of MAX6675
 
 LiquidCrystal_I2C lcd1(0x27, 20, 4);  /* nastavenie displeja pomocou I2C komunikácie
@@ -89,6 +93,7 @@ void setup() {    //časť setup sa vykoná raz, na začiatku programu
 
   pinMode(photoResPin, INPUT);
   pinMode(relayPin, OUTPUT);
+  pinMode(resetCerpadloTlacidloPin, INPUT);
 }
 
 void loop() {   //časť loop sa bude opakovať donekonečna, asi 4000 krát za sekundu
@@ -105,13 +110,21 @@ void loop() {   //časť loop sa bude opakovať donekonečna, asi 4000 krát za 
   else{
     lcd4.print("Cerpadlo 2: OFF");
   }
-  float teplotaCerpadlo2 = teplomerCerpadlo2.getTempCByIndex(0);
+  int teplotaCerpadlo2 = round(teplomerCerpadlo2.getTempCByIndex(0));
+  Serial.println(teplotaCerpadlo2);
   lcd4.setCursor(0,1);
   lcd4.print("Obeh.voda:");
   lcd4.setCursor(11,1);
-  lcd4.print(teplotaCerpadlo2,0);
-  lcd4.setCursor(13,1);
-  lcd4.print(" " + stupneZnak + "C ");
+  lcd4.print(String(teplotaCerpadlo2) + " " + stupneZnak + "C    ");
+  //lcd4.setCursor(16,1);
+  //lcd4.print(" " + stupneZnak + "C ");
+  lcd4.setCursor(0,2);
+  Serial.println(rel_zopnute);
+  if(digitalRead(resetCerpadloTlacidloPin) == HIGH){
+    Serial.println("prepinam");
+    rel_zopnute = !rel_zopnute;
+    while(digitalRead(resetCerpadloTlacidloPin) == HIGH){}
+  }
   
   
   /*
