@@ -39,11 +39,11 @@ const byte senzorPinLava = 12;    /*nastavenie hodnoty premennej senzorPin ako 1
                               byte -> premenná zaberá 1 byte (8 bitov) RAM pamäte*/
 const byte senzorPinPrava = 13;
 
-const byte teplomerPinCerpadlo2 = 10;
+const byte teplomerPinCerpadlo2 = 11;
                               
 const byte photoResPin = A0;
 
-const byte relayPin = 7;
+const byte relayPin = 10;
 bool rel_zopnute = false;
 
 const byte tempPinSO = 2;   //serial out pin
@@ -51,12 +51,13 @@ const byte tempPinCS = 3;   //chip select pin
 const byte tempPinSCK = 4;  //serial clock pin
 MAX6675 TeplomerSpaliny(tempPinSCK, tempPinCS, tempPinSO);  // create instance object of MAX6675
 
-LiquidCrystal_I2C lcd1(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  /* nastavenie displeja pomocou I2C komunikácie
+LiquidCrystal_I2C lcd1(0x27, 20, 4);  /* nastavenie displeja pomocou I2C komunikácie
                                                                  a použitím knižnice LiquidCrystal_I2C
                                                                  !!! TOTO NASTAVENIE NEMENIŤ !!!*/
-LiquidCrystal_I2C lcd2(0x26, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //displej vlavo dole
-LiquidCrystal_I2C lcd3(0x25, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); // žltý displej vpravo hore
-LiquidCrystal_I2C lcd4(0x23, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //displej vpravo dole
+LiquidCrystal_I2C lcd2(0x26, 16, 2); //displej vlavo dole
+LiquidCrystal_I2C lcd3(0x25, 20, 4); // žltý displej vpravo hore
+LiquidCrystal_I2C lcd4(0x23, 20, 4); //displej vpravo dole
+//LiquidCrystal_I2C lcd4(0x23, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //displej vpravo dole
 //LiquidCrystal_I2C lcd1 (0x27, 20, 4);
 
 OneWire oneWire(senzorPinLava);     //pomocou knižnice OneWire zapíše dáta z pinu 12(senzorPin) do premennej "oneWire"
@@ -72,18 +73,19 @@ void setup() {    //časť setup sa vykoná raz, na začiatku programu
   Serial.begin(9600);     //zaháji komunikáciu so seriálovým monitorom (užitočné pri hľadaní chýb v programe)
   senzoryL.begin();       //zaháji komunikáciu so senzormi
   senzoryP.begin();
-  lcd1.begin(20,4);        //zaháji komunikáciu s displejom, a nastaví ho na 20 stĺpcov a 4 riadky
-  lcd2.begin(16,2);
-  lcd3.begin(20,4);
-  lcd4.begin(16,2);
+  lcd1.init();        //zaháji komunikáciu s displejom, a nastaví ho na 20 stĺpcov a 4 riadky
+  lcd1.init();
+  lcd2.init();
+  lcd3.init();
+  lcd4.init();
   
   lcd1.backlight();        //zapne podsvietenie displeja
   lcd2.backlight();
   lcd3.backlight();
   lcd4.backlight();
 
-  lcd2.createChar(0,LeftFace);
-  lcd2.createChar(1,RightFace);
+  //lcd2.createChar(0,LeftFace);
+  //lcd2.createChar(1,RightFace);
 
   pinMode(photoResPin, INPUT);
   pinMode(relayPin, OUTPUT);
