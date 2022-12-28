@@ -161,9 +161,9 @@ void loop() {   //časť loop sa bude opakovať donekonečna, asi 4000 krát za 
       lcd2.print("Cerpadlo 1: OFF");
     }
     else{
-      lcd2.print("Cerpadlo 1: ON ");
-      rel_zopnute = true;
       digitalWrite(relayPin, HIGH);
+      rel_zopnute = true;
+      lcd2.print("Cerpadlo 1: ON ");
     }
   }
 
