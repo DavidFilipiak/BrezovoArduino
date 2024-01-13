@@ -59,7 +59,7 @@ LiquidCrystal_I2C lcd1(0x27, 20, 4);  /* nastavenie displeja pomocou I2C komunik
                                                                  a použitím knižnice LiquidCrystal_I2C
                                                                  !!! TOTO NASTAVENIE NEMENIŤ !!!*/
 LiquidCrystal_I2C lcd2(0x26, 16, 2); //displej vlavo dole
-LiquidCrystal_I2C lcd3(0x25, 20, 4); // žltý displej vpravo hore
+LiquidCrystal_I2C lcd3(0x25, 20, 4); // žltý displej vpmaravo hore
 LiquidCrystal_I2C lcd4(0x23, 20, 4); //displej vpravo dole
 //LiquidCrystal_I2C lcd4(0x23, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //displej vpravo dole
 //LiquidCrystal_I2C lcd1 (0x27, 20, 4);
