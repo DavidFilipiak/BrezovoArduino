@@ -14,7 +14,6 @@ Thermocouple* thermocouple;
 //MAX6675 TeplomerSpaliny(tempPinSCK, tempPinCS, tempPinSO);  // create instance object of MAX6675
 
 const String stupneZnak = String(char(223));
-int pocet = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -34,10 +33,7 @@ void loop() {
   Serial.println(String(teplotaSpaliny));
 
   lcd.setCursor(0,0);
-  lcd.print(String(teplotaSpaliny) + " " + stupneZnak + "C");
-  lcd.setCursor(0,1);
-  lcd.print(pocet);
-  pocet++;
+  lcd.print(String(teplotaSpaliny) + " " + stupneZnak + "C    ");
 
   delay(200);
 
